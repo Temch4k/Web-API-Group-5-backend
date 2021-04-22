@@ -23,6 +23,7 @@ var foodSchema = new Schema({
     nuggets: {type: String, required: true},
     burrito: {type: String, required: true},
     taco: {type: String, required: true},
+    cost: {type: Number, required: true},
     imageUrl: { type: String, required: false }
 });
 
