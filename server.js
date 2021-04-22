@@ -1,7 +1,7 @@
 /*
-    Name : Artsiom Skarakhod
-    Project : Homework 4
-    Description : Reviews
+    Name : final project
+    Project : Final
+    Description : Final
  */
 var express = require('express');
 var http = require('http');
@@ -12,7 +12,7 @@ var jwt = require('jsonwebtoken');
 var cors = require('cors');
 var User = require('./Users');
 var Movie = require('./Food');
-var Review = require('./reviews');
+var Review = require('./order');
 var mongoose = require('mongoose');
 
 
@@ -97,7 +97,7 @@ router.post('/signin', function (req, res) {
 
 
 // this is where we manipulate the database
-router.route('/moviecollection')
+router.route('/McCarthys')
     // gets all movies
     .get(authJwtController.isAuthenticated, function (req, res) {
         // find the movie using the request title
