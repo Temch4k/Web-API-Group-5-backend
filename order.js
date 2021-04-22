@@ -1,6 +1,8 @@
+// changing this to "order schema"
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
+var Food = require('/food.js');
 
 mongoose.Promise = global.Promise;
 
@@ -13,14 +15,12 @@ try{
 
 mongoose.set('useCreateIndex', true)
 
-// review
-var reviewSchema = new Schema({
-    name: {type: String, required: true},
-    comment: {type: String},
-    rating: {type: Number,required: true},
-    title: {type: String, required: true},
-    movieid: {type: mongoose.Types.ObjectId, required: true}
+// order
+var orderSchema = new Schema({
+    userName: {type: String, required: true},
+    amount: {type: Number,required: true},
+    items: {type: [{food: Food}], required: true}, //???????
 });
 
 // return the model to server
-module.exports = mongoose.model('Review', reviewSchema);
+module.exports = mongoose.model('Order', orderSchema);
