@@ -16,14 +16,15 @@ try{
 mongoose.set('useCreateIndex', true)
 
 // a movie schema for the db
-var movieSchema = new Schema({
-    title: {type: String, required: true},
-    release: {type: Date, required: true},
-    genre: {type: String,required: true, enum: ['Action', 'Adventure', 'Comedy', 'Drama', 'Fantasy', 'Horror', 'Mystery', 'Thriller', 'Western']},
-    characters: { type: [{actorName: String, characterName: String}], required: true },
-    review:{type: Number},
+var foodSchema = new Schema({
+    cheeseburger: {type: String, required: true},
+    fries: {type: String, required: true},
+    soda: {type: String, required: true},
+    nuggets: {type: String, required: true},
+    burrito: {type: String, required: true},
+    taco: {type: String, required: true},
     imageUrl: { type: String, required: false }
 });
 
 // return it to the server
-module.exports = mongoose.model('Movie', movieSchema);
+module.exports = mongoose.model('Movie', foodSchema);
