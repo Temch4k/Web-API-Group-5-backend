@@ -11,7 +11,7 @@ var authJwtController = require('./auth_jwt');
 var jwt = require('jsonwebtoken');
 var cors = require('cors');
 var User = require('./Users');
-var Movie = require('./Food');
+var Food = require('./Food');
 var Order = require('./order');
 var mongoose = require('mongoose');
 
