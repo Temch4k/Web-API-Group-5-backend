@@ -24,6 +24,7 @@ var foodSchema = new Schema({
     burrito: {type: String, required: true},
     taco: {type: String, required: true},
     cost: {type: Number, required: true},
+    calories: {type: Number, required: true},
     imageUrl: { type: String, required: false }
 });
 
