@@ -98,18 +98,17 @@ router.post('/signin', function (req, res) {
 
 // this is where we manipulate the database
 router.route('/McCarthys')
-    // gets all movies
+    // gets all food
     .get(authJwtController.isAuthenticated, function (req, res) {
-        // find the movie using the request title
+        // find the food using the request title
         // .select is there to tell us what will be returned
-        if(req.query == null || req.query.review !== "true"){
             Food.find().exec(function (err, food) {
             // if we have an error then we display it
                 if(err) 
                 {
                     return res.status(401).json({message: "Something is wrong: \n", error: err});
                 }
-                // otherwise just show the movie that was returned
+                // otherwise just show the food that was returned
                 else if(food == null)
                 {
                     return res.status(404).json({success: false, message: "Error: food item not found."});
@@ -119,45 +118,6 @@ router.route('/McCarthys')
                     return res.status(200).json(food);
                 }
             })
-        }
-        else 
-        {
-            Food.aggregate()
-            .match(req.body)
-            .lookup({from: 'reviews', localField: '_id', foreignField: 'movieid', as: 'reviews'})
-            .exec(function (err, food) {
-                if (err)
-                {
-                    return res.send(err);
-                }
-                // find average reviews four our movies
-                var numOfMovies = movie.length;
-                if (food && numOfMovies > 0)
-                {
-                    food.forEach(function(mp)
-                    {
-                        var totalSum = 0;
-                        mp.reviews.forEach(function(rp)
-                        {
-                            // add the reviews together into one variable
-                            totalSum = totalSum + rp.rating;
-                        });
-
-
-                        if(mp.reviews.length > 0){
-                            Object.assign(mp, {avgRating: totalSum/mp.reviews.length});
-                        }
-                    });
-                    food.sort((a,b) => {
-                        return b.avgRating - a.avgRating;
-                    });
-                    return res.status(200).json({result: food});
-                }
-                else {
-                    return res.status(403).json({success: false, message: "Movies not found."});
-                }
-            });
-        }
     })
     // post adds a movie
     .post(authJwtController.isAuthenticated, function(req,res){            // create new movie
@@ -209,7 +169,7 @@ router.route('/McCarthys')
     // delete, delets a move from the database, by looking up it's name
     .delete(authJwtController.isAuthenticated, function (req,res){          // delete movie
         // we call findAndRemove, which finds a movie using a title and removes it
-        Food.findOneAndRemove({title: req.body.title}).select('title genre release characters').exec(function(err, movie){
+        Movie.findOneAndRemove({title: req.body.title}).select('title genre release characters').exec(function(err, movie){
             // if there is an error then something went wrong
             if (err)
             {
@@ -243,7 +203,7 @@ router.route('/McCarthys')
         else
         {
             // we update the movie by the title
-            Food.updateMany(req.body.titleFind, req.body.updateFind, function(err, movie)
+            Movie.updateMany(req.body.titleFind, req.body.updateFind, function(err, movie)
             {
                 JSON.stringify(movie);
                 // if an error occured then we simply cancel the operation
@@ -268,69 +228,25 @@ router.route('/McCarthys')
         }
     })
 
-router.route('/moviecollection/:movieid')
+router.route('/McCarthys/:foodId')
     .get(authJwtController.isAuthenticated, function (req, res) {
-        // find the movie using the request title
-        // .select is there to tell us what will be returned
-        if(req.query == null || req.query.review !== "true"){
-            Food.findOne({_id: req.params.movieid}).select("title year genre actors").exec(function (err, movie) {
-                // if we have an error then we display it
-                if(err) 
-                {
-                    return res.status(401).json({message: "Something is wrong: \n", error: err});
-                }
-                // otherwise just show the movie that was returned
-                else if(movie == null)
-                {
-                    return res.status(404).json({success: false, message: "Error: movies not found."});
-                }
-                else
-                {
-                    return res.status(200).json(movie);
-                }
-            })
-        }
-        else 
-        {
-            Food.aggregate()
-            .match({_id: mongoose.Types.ObjectId(req.params.movieid)})
-            .lookup({from: 'reviews', localField: '_id', foreignField: 'movieid', as: 'reviews'})
-            .exec(function (err, movie) {
-                if (err)
-                {
-                    return res.send(err);
-                }
-                // find average reviews four our movies
-                var numOfMovies = movie.length;
-                if (movie && numOfMovies > 0) 
-                {
-                    // add all of the average values together
-                    for (let i = 0; i < numOfMovies; i++) 
-                    {
-                        let sum = 0;
-                        // go through all of the review values and add them
-                        for (let k = 0; k < movie[i].reviews.length; k++) 
-                        {
-                            sum = sum + movie[i].reviews[k].rating;
-                        }
-                        // adds the avg review to the movie
-                        if (movie[i].reviews.length > 0) 
-                        {
-                            movie[i] = Object.assign({},movie[i],{avgRating: (sum/movie[i].reviews.length).toFixed(2)});
-                        }
-                    }
-                    movie.sort((a,b) => {
-                        return b.avgRating - a.avgRating;
-                });
-                return res.status(200).json({
-                    result: movie
-                });
+        // find the food using food id
+        Movie.findOne({_id: req.params.foodId}).exec(function (err, food) {
+            // if we have an error then we display it
+            if(err) 
+            {
+                return res.status(401).json({message: "Something is wrong: \n", error: err});
             }
-                else {
-                    return res.status(404).json({success: false, message: "Not found."});
-                }
-            });
-        }
+            // otherwise just show the food that was returned
+            else if(food == null)
+            {
+                return res.status(404).json({success: false, message: "Error: your food item is not found."});
+            }
+            else
+            {
+                return res.status(200).json(food);
+            }
+        })
     })
 
 router.route('/reviews')
