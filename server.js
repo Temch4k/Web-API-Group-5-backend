@@ -112,7 +112,7 @@ router.route('/McCarthys')
                 // otherwise just show the movie that was returned
                 else if(food == null)
                 {
-                    return res.status(404).json({success: false, message: "Error: movies not found."});
+                    return res.status(404).json({success: false, message: "Error: food item not found."});
                 }
                 else
                 {
