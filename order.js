@@ -19,6 +19,7 @@ mongoose.set('useCreateIndex', true)
 var orderSchema = new Schema({
     userName: {type: String, required: true},
     amount: {type: Number,required: true},
+    calorieAmount: {type: Number,required: true},
     items: {type: [{food: Food}], required: true}, //???????
 });
 
