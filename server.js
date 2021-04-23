@@ -176,7 +176,7 @@ router.route('/McCarthys')
         // we update the food item with given info
         else
         {
-            // we update the movie by the food name
+            // we update the food item by the food name
             Food.updateMany(req.body.nameFind, req.body.updateFind, function(err, food)
             {
                 JSON.stringify(food);
