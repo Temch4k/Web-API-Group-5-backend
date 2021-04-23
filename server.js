@@ -166,35 +166,33 @@ router.route('/McCarthys')
         })
     })
 
-    // put simply updates a movie in our database by looking up a name
+    // put simply updates a food item in our database by looking up a name
     .put(authJwtController.isAuthenticated, function (req,res) {        // updates a movie
         // if the body is empty then the user never submitted the request properly
-        // if the title is empty then we can't look up the movie we are editing
-        // if the update is empty then we don't know what to update
-        if(!req.body || !req.body.titleFind || !req.body.updateFind)
+        if(!req.body || !req.body.nameFind || !req.body.updateFind)
         {
             return res.status(403).json({success: false, message: "Error: Not all of the information is provided for an update"});
         }
-        // we update the movie with given info
+        // we update the food item with given info
         else
         {
-            // we update the movie by the title
-            Movie.updateMany(req.body.titleFind, req.body.updateFind, function(err, movie)
+            // we update the movie by the food name
+            Food.updateMany(req.body.nameFind, req.body.updateFind, function(err, food)
             {
-                JSON.stringify(movie);
+                JSON.stringify(food);
                 // if an error occured then we simply cancel the operation
                 if(err)
                 {
                     return res.status(403).json({success: false, message: "Error updating a movie"});
                     throw err;
                 }
-                // if movie is null then we never found the movie we were looking for
-                else if(movie.n === 0)
+                // if food item is null then we never found the item we were looking for
+                else if(food.n === 0)
                 {
                     return res.status(404).json({success: false, message: "Error, can't find the movie"});
                     throw err;
                 }
-                // otherwise, if everything went well then we updated the movie
+                // otherwise, if everything went well then we updated the food item
                 else
                 {
                     return res.status(200).json({success: true, message: "Succsessfully updated the movie"});
