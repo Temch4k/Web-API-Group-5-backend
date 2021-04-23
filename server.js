@@ -119,8 +119,8 @@ router.route('/McCarthys')
                 }
             })
     })
-    // post adds a movie
-    .post(authJwtController.isAuthenticated, function(req,res){            // create new movie
+    // post adds a food
+    .post(authJwtController.isAuthenticated, function(req,res){            // create new food
             let fod = new Food()
             fod.name = req.body.name;
             fod.cost = req.body.cost;
@@ -129,13 +129,13 @@ router.route('/McCarthys')
 
             // then call a save command,
             fod.save(function(err){
-                // if error then something went wrong, like a movie with the same name already exists
+                // if error then something went wrong, like a food with the same name already exists
                 if (err) {
                     console.log("sorry we ran into an error")
                     res.status(400).json({success: false, msg: 'we have an error posting'})
                     throw err
                 }
-                // otherwise we are good, and the movie has been added
+                // otherwise we are good, and the food has been added
                 else{
                     res.status(200).json({success: true, msg: 'Food Item added successfully'})
                 }
@@ -143,9 +143,9 @@ router.route('/McCarthys')
     })
 
     // delete, delets a move from the database, by looking up it's name
-    .delete(authJwtController.isAuthenticated, function (req,res){          // delete movie
-        // we call findAndRemove, which finds a movie using a title and removes it
-        Movie.findOneAndRemove({title: req.body.title}).select('title genre release characters').exec(function(err, movie){
+    .delete(authJwtController.isAuthenticated, function (req,res){          // delete food
+        // we call findAndRemove, which finds a food using a title and removes it
+        Food.findOneAndRemove({title: req.body.name}).exec(function(err, food){
             // if there is an error then something went wrong
             if (err)
             {
@@ -153,15 +153,15 @@ router.route('/McCarthys')
                 console.log("could not delete")
                 throw err
             }
-            // if the movie returned is not null then we deleted the movie successfully
-            else if(movie !== null)
+            // if the food returned is not null then we deleted the food successfully
+            else if(food !== null)
             {
-                console.log("Movie Deleted")
-                res.status(200).json({success: true, msg: 'movie deleted successfully'})
+                console.log("Food Deleted")
+                res.status(200).json({success: true, msg: 'food deleted successfully'})
             }
-            // if the mvie is returned null then we never found a movie in the database with the same name
+            // if the food item is returned null then we never found it in the database with the same name
             else {
-                res.status(400).json({success: false, msg: 'no movie was found'})
+                res.status(400).json({success: false, msg: 'no food item was found'})
             }
         })
     })
