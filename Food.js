@@ -20,7 +20,7 @@ var foodSchema = new Schema({
     name: {type: String, required: true},
     cost: {type: Number, required: true},
     calories: {type: Number, required: true},
-    imageUrl: { type: String, required: false }
+    imageUrl: {type: String, required: false }
 });
 
 // return it to the server
