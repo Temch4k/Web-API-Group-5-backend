@@ -121,29 +121,6 @@ router.route('/McCarthys')
     })
     // post adds a movie
     .post(authJwtController.isAuthenticated, function(req,res){            // create new movie
-        var numOfChars = req.body.characters.length;
-        var error = false;
-        // goes thru character array inside of the body and makes sure that all the info is there
-        for(var i = 0; i< numOfChars;i++) {
-            if(req.body.characters[i].characterName === ''|| req.body.characters[i].characterName === '')
-            {
-                error = true;
-                if(error)
-                {
-                    break;
-                }
-            }
-        }
-        // if there are less than 3 characters in a movie it won't let you add that movie
-        if(numOfChars<3)
-        {
-            res.status(400).json({success: false, msg: 'Must have at least 3 movie characters'})
-        }
-        // if one of the fields are empty it won't let you add the movie
-        else if (req.body.title === ''|| req.body.release === '' || req.body.genre === ''|| error ){
-            res.status(400).json({success: false, msg: 'Please make sure you have entered all fields'})
-            // otherwise we simply add the movie request into a temp movie
-        } else {
             let fod = new Food()
             fod.name = req.body.name;
             fod.cost = req.body.cost;
@@ -151,7 +128,7 @@ router.route('/McCarthys')
             fod.imageUrl = req.body.imageUrl;
 
             // then call a save command,
-            mov.save(function(err){
+            fod.save(function(err){
                 // if error then something went wrong, like a movie with the same name already exists
                 if (err) {
                     console.log("sorry we ran into an error")
@@ -160,10 +137,9 @@ router.route('/McCarthys')
                 }
                 // otherwise we are good, and the movie has been added
                 else{
-                    res.status(200).json({success: true, msg: 'Movie added successfully'})
+                    res.status(200).json({success: true, msg: 'Food Item added successfully'})
                 }
             })
-        }
     })
 
     // delete, delets a move from the database, by looking up it's name
@@ -233,7 +209,7 @@ router.route('/McCarthys/:foodId')
         // find the food using food id
         Movie.findOne({_id: req.params.foodId}).exec(function (err, food) {
             // if we have an error then we display it
-            if(err) 
+            if(err)
             {
                 return res.status(401).json({message: "Something is wrong: \n", error: err});
             }
