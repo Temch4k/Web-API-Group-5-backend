@@ -184,12 +184,11 @@ router.route('/McCarthys')
             res.status(400).json({success: false, msg: 'Please make sure you have entered all fields'})
             // otherwise we simply add the movie request into a temp movie
         } else {
-            let mov = new Movie()
-            mov.title = req.body.title
-            mov.release = req.body.release
-            mov.genre = req.body.genre
-            mov.characters = req.body.characters;
-            mov.imageUrl = req.body.imageUrl;
+            let fod = new Food()
+            fod.name = req.body.name;
+            fod.cost = req.body.cost;
+            fod.calories = req.body.calories;
+            fod.imageUrl = req.body.imageUrl;
 
             // then call a save command,
             mov.save(function(err){

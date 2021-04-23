@@ -17,12 +17,7 @@ mongoose.set('useCreateIndex', true)
 
 // a movie schema for the db
 var foodSchema = new Schema({
-    cheeseburger: {type: String, required: true},
-    fries: {type: String, required: true},
-    soda: {type: String, required: true},
-    nuggets: {type: String, required: true},
-    burrito: {type: String, required: true},
-    taco: {type: String, required: true},
+    name: {type: String, required: true},
     cost: {type: Number, required: true},
     calories: {type: Number, required: true},
     imageUrl: { type: String, required: false }
