@@ -58,7 +58,8 @@ router.post('/signup', function(req, res) {
 // does a signin option
 router.post('/signin', function (req, res) {
     // create a new temp user and get the request's information saved into it
-    var userNew = new User();
+    //var userNew = new User();
+    let userNew = new User();
     userNew.username = req.body.username
     userNew.password = req.body.password
 
