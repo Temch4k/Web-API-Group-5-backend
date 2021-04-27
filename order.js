@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
-var Food = require('/food.js');
+var Food = require('/Food.js');
 
 mongoose.Promise = global.Promise;
 
