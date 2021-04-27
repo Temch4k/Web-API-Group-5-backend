@@ -164,9 +164,9 @@ router.route('/McCarthys')
     })
 
     // put simply updates a food in our database by looking up a name
-    .put(authJwtController.isAuthenticated, function (req,res) {        // updates a movie
+    .put(authJwtController.isAuthenticated, function (req,res) {        // updates a food item
         // if the body is empty then the user never submitted the request properly
-        // if the title is empty then we can't look up the movie we are editing
+        // if the title is empty then we can't look up the food we are editing
         // if the update is empty then we don't know what to update
         if(!req.body || !req.body.titleFind || !req.body.updateFind)
         {

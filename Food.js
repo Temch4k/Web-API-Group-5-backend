@@ -15,7 +15,7 @@ try{
 
 mongoose.set('useCreateIndex', true)
 
-// a movie schema for the db
+// a food schema for the db
 var foodSchema = new Schema({
     name: {type: String, required: true},
     cost: {type: Number, required: true},
