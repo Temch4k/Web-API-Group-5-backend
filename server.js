@@ -46,7 +46,7 @@ router.post('/signup', function(req, res) {
                     return res.status(403).json({success: false, message: 'A user with that username already exist'})
                 }
                 else
-                    return res.status(400).json(err)
+                    return res.status(400).json({success: false, message: "error guys!"})
             }
             // otherwise send a happy note
             console.log("created new user")
