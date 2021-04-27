@@ -7,6 +7,7 @@ var express = require('express');
 var http = require('http');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var authController = require('./auth');
 var authJwtController = require('./auth_jwt');
 var jwt = require('jsonwebtoken');
 var cors = require('cors');
