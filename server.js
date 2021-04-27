@@ -14,8 +14,6 @@ var User = require('./Users');
 var Food = require('./Food');
 var mongoose = require('mongoose');
 
-
-
 var app = express();
 app.use(cors());
 app.use(bodyParser.json());

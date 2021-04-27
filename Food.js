@@ -24,4 +24,4 @@ var foodSchema = new Schema({
 });
 
 // return it to the server
-module.exports = mongoose.model('Movie', foodSchema);
+module.exports = mongoose.model('Food', foodSchema);
