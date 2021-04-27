@@ -205,7 +205,7 @@ router.route('/McCarthys')
 router.route('/McCarthys/:foodId')
     .get(authJwtController.isAuthenticated, function (req, res) {
         // find the food using food id
-        Movie.findOne({_id: req.params.foodId}).exec(function (err, food) {
+        Food.findOne({_id: req.params.foodId}).exec(function (err, food) {
             // if we have an error then we display it
             if(err)
             {
@@ -223,52 +223,7 @@ router.route('/McCarthys/:foodId')
         })
     })
 
-router.route('/reviews')
-    .post(authJwtController.isAuthenticated, function(req, res){
-        Movie.findOne({title: req.body.title}).select('title').exec(function (err, movie) {
 
-            // My friend Oleksiy helped me with it
-            let usertoken = req.headers.authorization;
-            let token = usertoken.split(' ');
-            let decoded = jwt.verify(token[1], process.env.SECRET_KEY);
-
-            // if we have an error then we display it
-            if (err)
-            {
-                res.status(400).json({message: "Something is wrong: \n", error: err});
-            }
-            // otherwise just show the review that was returned
-            else
-            {
-                if(movie != null)
-                {
-                    let review = new Review()
-                    review.name = decoded.username;
-                    review.comment = req.body.comment;
-                    review.rating = req.body.rating;
-                    review.title = req.body.title;
-                    review.movieid = movie.id;
-
-                    console.log(review);
-                    // then call a save command,
-                    review.save(function (err) {
-                        // if error then something went wrong, like a review with the same name already exists
-                        if (err) {
-                            return res.status(401).json({success: false, msg: 'we have an error posting'})
-                        }
-                        // otherwise we are good, and the movie has been added
-                        else {
-                            return res.status(200).json({success: true, msg: 'Review added successfully'})
-                        }
-                    })
-                }
-                else
-                {
-                    return res.status(404).json({success: false, msg:'Error. Movie not found'});
-                }
-            }
-        })
-    });
 
 
 app.use('/', router);
