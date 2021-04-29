@@ -18,7 +18,7 @@ mongoose.set('useCreateIndex', true)
 // a food schema for the db
 var charitySchema = new Schema({
     name: {type: String, required: true},
-    description: {type: Number, required: true},
+    description: {type: String, required: true},
     imageUrl: {type: String, required: false }
 });
 
