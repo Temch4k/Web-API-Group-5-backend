@@ -95,7 +95,7 @@ router.post('/signin', function (req, res) {
 
 
 // this is where we manipulate the database
-router.route('/McCarthys')
+router.route('/Group5')
     // gets all food
     .get(authJwtController.isAuthenticated, function (req, res) {
         // find the food using the request title
@@ -202,7 +202,7 @@ router.route('/McCarthys')
         }
     })
 
-router.route('/McCarthys/:foodId')
+router.route('/Group5/:foodId')
     .get(authJwtController.isAuthenticated, function (req, res) {
         // find the food using food id
         Food.findOne({_id: req.params.foodId}).exec(function (err, food) {
