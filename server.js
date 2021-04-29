@@ -12,6 +12,7 @@ var jwt = require('jsonwebtoken');
 var cors = require('cors');
 var User = require('./Users');
 var Food = require('./Food');
+var Charity = require('./Charity');
 var mongoose = require('mongoose');
 
 var app = express();
@@ -200,6 +201,114 @@ router.route('/Group5')
             })
         }
     })
+
+// this is where we manipulate the database
+router.route('/charities')
+    // gets all food
+    .get(authJwtController.isAuthenticated, function (req, res) {
+        // find the food using the request title
+        // .select is there to tell us what will be returned
+        Charity.find().exec(function (err, charity) {
+            // if we have an error then we display it
+            if(err)
+            {
+                return res.status(401).json({message: "Something is wrong: \n", error: err});
+            }
+            // otherwise just show the food that was returned
+            else if(charity == null)
+            {
+                return res.status(404).json({success: false, message: "Error: charity not found."});
+            }
+            else
+            {
+                return res.status(200).json(charity);
+            }
+        })
+    })
+    // post adds a food
+    .post(authJwtController.isAuthenticated, function(req,res){            // create new food
+        let chary = new Charity()
+        chary.name = req.body.name;
+        chary.description = req.body.description;
+        chary.imageUrl = req.body.imageUrl;
+
+        // then call a save command,
+        chary.save(function(err){
+            // if error then something went wrong, like a food with the same name already exists
+            if (err) {
+                console.log("sorry we ran into an error")
+                res.status(400).json({success: false, msg: 'we have an error posting'})
+                throw err
+            }
+            // otherwise we are good, and the food has been added
+            else{
+                res.status(200).json({success: true, msg: 'Charity added successfully'})
+            }
+        })
+    })
+
+    // delete, delets a move from the database, by looking up it's name
+    .delete(authJwtController.isAuthenticated, function (req,res){          // delete food
+        // we call findAndRemove, which finds a food using a title and removes it
+        Charity.findOneAndRemove({name: req.body.name}).exec(function(err, charity){
+            // if there is an error then something went wrong
+            if (err)
+            {
+                res.status(400).json({success: false, msg: 'error occured'})
+                console.log("could not delete")
+                throw err
+            }
+            // if the food returned is not null then we deleted the food successfully
+            else if(charity !== null)
+            {
+                console.log("Charity Deleted")
+                res.status(200).json({success: true, msg: 'charity deleted successfully'})
+            }
+            // if the food item is returned null then we never found it in the database with the same name
+            else {
+                res.status(400).json({success: false, msg: 'no charity was found'})
+            }
+        })
+    })
+
+    // put simply updates a food in our database by looking up a name
+    .put(authJwtController.isAuthenticated, function (req,res) {        // updates a food item
+        // if the body is empty then the user never submitted the request properly
+        // if the title is empty then we can't look up the food we are editing
+        // if the update is empty then we don't know what to update
+        if(!req.body || !req.body.titleFind || !req.body.updateFind)
+        {
+            return res.status(403).json({success: false, message: "Error: Not all of the information is provided for an update"});
+        }
+        // we update the movie with given info
+        else
+        {
+            // we update the movie by the title
+            Movie.updateMany(req.body.titleFind, req.body.updateFind, function(err, movie)
+            {
+                JSON.stringify(movie);
+                // if an error occured then we simply cancel the operation
+                if(err)
+                {
+                    return res.status(403).json({success: false, message: "Error updating a movie"});
+                    throw err;
+                }
+                // if movie is null then we never found the movie we were looking for
+                else if(movie.n === 0)
+                {
+                    return res.status(404).json({success: false, message: "Error, can't find the movie"});
+                    throw err;
+                }
+                // otherwise, if everything went well then we updated the movie
+                else
+                {
+                    return res.status(200).json({success: true, message: "Succsessfully updated the movie"});
+                    throw err;
+                }
+            })
+        }
+    })
+
 
 router.route('/Group5/:foodId')
     .get(authJwtController.isAuthenticated, function (req, res) {
